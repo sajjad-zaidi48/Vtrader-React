@@ -6,15 +6,20 @@ import TraderForm from './components/traderform';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <div>
-          <GridData/>
-        </div>
-        <div>
+    <div >
+      <div className='nav'>
+        <h1>V-Trader App</h1>
+      </div>
+      <div className='dashBoard'>
+      <div >
           <TraderForm/>
         </div>
-      </header>
+        <div className='orderBlotter'>
+          <GridData/>
+        </div>
+      </div>
+        
+        
     </div>
   );
 }
