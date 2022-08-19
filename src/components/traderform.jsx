@@ -10,6 +10,8 @@ const colCountByScreen = {
 };
 
 function TraderForm() {
+  const [form,, setForm] = useState('')
+
     return (
       <div className='Orderform'>
         <div>Order Form</div>
@@ -21,6 +23,7 @@ function TraderForm() {
           minColWidth={533}
           colCount="auto"
           screenByWidth={screenByWidth}
+          onValueChanged={handle}
         />
         <div className="buttons-demo">
         <div className="buttons">
