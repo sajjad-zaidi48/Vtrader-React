@@ -47,3 +47,8 @@
   display: flex;
   justify-content: center;
 }
+.btn-login{
+  display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
