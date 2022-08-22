@@ -10,9 +10,8 @@ function  SocketConnecter() {
 
   let token = localStorage.getItem('api_access_token');
   console.log(token)
-  const socket = new WebSocket('ws://173.255.116.184:8002/transactionalws?access_token='+token);
-
-
+  let socket = new WebSocket('ws://173.255.116.184:8002/transactionalws?access_token='+token);
+  
   useEffect(() => {
     
     console.log('checking socket' , socket.readyState)
