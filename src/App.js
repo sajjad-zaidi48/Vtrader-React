@@ -6,6 +6,7 @@ import GridData from './components/datagrid';
 import TraderForm from './components/traderform';
 import { Button } from 'devextreme-react/button';
 import axios from 'axios';
+import SocketConnecter from './service/reactServices';
 
 
 
@@ -17,41 +18,21 @@ function App() {
     await axios.post("http://173.255.116.184:8002/int/is/api/login",
     
     {
-    email: 'qatest34@mailinator.com',
-    password : 'qatest34',
+    email: 'qatest24@mailinator.com',
+    password : 'qatest24',
     captchaToken : ''
     }
     ).then(function(response){
     if(response.data.status == true && response.data.codeId != null)
       { 
-      let codeId = 
-      setcodeId(response.data.codeId) 
-      setTfa(123456)
-      console.log(response.data)
-    
-      // console.log(`http://173.255.116.184:8002/int/is/api/login/tfa
-      // ?codeId=${codeId}&tfaCode=${TFA}`)
-      // ===========
-     
-      // axios.post("http://173.255.116.184:8002/int/is/api/login",
-      // {
-      //   codeId :codeId,
-      //   tfa:TFA
-      //   }
-      //   ).then(function(response){
-      //     console.log(response)
-      //   })
-
-      //   }
-
-      //  axios.post(`http://173.255.116.184:8002/int/is/api/login/tfa?codeId=${codeId}&tfaCode=${TFA}`)
-
-      // 'int/is/api/login/tfa?codeId='+codeId+'&tfaCode='+TFA
-
-      // localStorage.setItem("verification_id",response.data.codeId)  
-      //  localStorage.setItem("api_access_token",response.data.token)
-      // localStorage.setItem("email",self.email) 
-
+      setcodeId(response.data.codeId)
+      //  axios  TFA 
+      axios.post('http://173.255.116.184:8002/int/is/api/login/tfa/'+response.data.codeId+"/123456")
+     .then(function(response){
+      let bearerToken =  response.data.access_token
+      localStorage.setItem("api_access_token", bearerToken)
+      })
+     .catch(err => console.warn(err));
       }       
     }).catch(function(error){
      console.log(error)
@@ -60,21 +41,10 @@ function App() {
     // setFetchedData(data)
   }
   
-  async function handleTfa(){
-    console.log('tfa', codeId)
-    axios.post('http://173.255.116.184:8002/int/is/api/login/tfa',null,{ params: {
-      codeId: codeId ,
-      tfaCode: 123456
-    }},{
-      'Content-Type': 'application/json',
-    })
-    .then(response => response.data)
-    .catch(err => console.warn(err));
-
-  }
+ 
 
   useEffect(() => {
-    // fetchData()
+    // 
   }, [])
 
  const handleLogin=(e)=>{
@@ -83,6 +53,7 @@ function App() {
  }
   return (
     <div >
+      <SocketConnecter/>
       <div className='nav'>
         <h1>V-Trader App</h1>
         <div className='btn-login'>
@@ -94,13 +65,7 @@ function App() {
                   onClick={handleLogin}
                 />
         </div>
-        <Button
-                  width={120}
-                  text="login"
-                  type="default"
-                  stylingMode="contained"
-                  onClick={handleTfa}
-                />
+
         
       </div>
       <div className='dashBoard'>

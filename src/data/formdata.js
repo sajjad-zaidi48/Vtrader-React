@@ -1,4 +1,5 @@
-export default  {
+export default  
+ {
     Symbol: 'BABA',
     Quantity: 1200,
     EstimatedAmount: '$',
@@ -10,5 +11,4 @@ export default  {
     Destination: 'ARCA',
    
   };
- 
   
