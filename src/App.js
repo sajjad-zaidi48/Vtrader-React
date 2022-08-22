@@ -47,13 +47,16 @@ function App() {
     // 
   }, [])
 
+  const handleData = (data)=>{
+    return data
+  }
  const handleLogin=(e)=>{
   // e.preventDefault();
   fetchData()
  }
   return (
     <div >
-      <SocketConnecter/>
+      <SocketConnecter handleData={handleData} />
       <div className='nav'>
         <h1>V-Trader App</h1>
         <div className='btn-login'>
@@ -70,7 +73,7 @@ function App() {
       </div>
       <div className='dashBoard'>
       <div >
-          <TraderForm/>
+          <TraderForm />
         </div>
         <div className='orderBlotter'>
           <GridData />

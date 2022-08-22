@@ -30,35 +30,27 @@ function TraderForm() {
     console.log(token)
     await axios.post( 'http://173.255.116.184:8002/int/ord/api/orders',
     {
-      
-
-        ordType: "1",
-    
-        side: "1",
-    
+        ordType: "1",   
+        side: "1",   
         symbol: "LUMN",
-    
-        timeInForce: "1",
-    
-        account: "qatest24account1",
-    
-        orderQty: 100
-    
-    
-    }
-    ,
+        timeInForce: "1",   
+        account: "qatest24account1",   
+        orderQty: 100 
+    },
       {
         headers: { Authorization: `Bearer ${token}` }
       }
     ).then(function(response){
       console.log(response)
-    }).catch((err)=>console.log(err));
+    }).catch((err)=>console.log(err)); 
    
   }
 
     return (
       <div className='Orderform'>
+
         <div>Order Form</div>
+
         <Form
           id="form"
           formData={form}
