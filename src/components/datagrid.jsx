@@ -4,51 +4,41 @@ import DataSource from 'devextreme/data/data_source';
 import Subscribe from '../service/orderSubscribe';
 import ArrayStore from 'devextreme/data/array_store';
 import axios from 'axios';
+import { useCustomEventListener } from 'react-custom-events'
 
-const  order = [ {
-  account: "qatest24account1",
-  avgPx: 71.40289999999999,
-  clOrdID: "LSL680400037",
-  complianceID: null,
-  contactName: null,
-  cumQty: 100,
-  destination: "D0",
-  id: "LSL680400037",
-  leavesQty: 0,
-  locateID: null,
-  locateRate: 0,
-  locateRequired: false,
-  ordType: "1",
-  orderQty: 100,
-  orderTypeDesc: "MKT",
-  originatingUserDesc: "qatest24",
-  price: 0,
-  qOrderID: 74,
-  side: "1",
-  sideDesc: "BUY",
-  status: null,
-  statusDesc: "Filled",
-  stopPx: 0,
-  symbol: "LUMN",
-  symbolSfx: null,
-  symbolWithoutSfx: "LUMN",
-  text: null,
-  tifDesc: "GTC",
-  time: "8/22/2022 5:00:53 AM",
-  timeInForce: "1",
-  transactTime: "2022-08-22T09:00:53.216Z",
-  workableQty: 0
-    }]
 
-function GridData() {
 
-  const columns = ['account', 'avgPx', 'destination', 'ordType', 'orderQty','orderTypeDesc','sideDesc' , 'time' , 'timeInForce' , 'transactTime'];
-  const [ss , setCount] = useState(0);
+
+function GridData({handleData ,test}) {
+
+  const columns = ['symbol','qOrderID','account','sideDesc','orderTypeDesc','price', 'avgPx','statusDesc','tifDesc','transactionTime','text', 'destination'];
   
   const OrderGridStore = new ArrayStore({
     key: 'id',
    });
+ 
+   useCustomEventListener('my-event', (data) => {
+    console.log('custom library data',data)
+    let eventType = data.data.eventType
+                let eventData = data.data.eventData
+                if (eventType === 0) {
+                    eventData.forEach((value,key)=>{
+                        OrderGridStore.push([{ type: "insert", data: value }]);
+                    })
+                } else if (eventType === 1) {
+                        eventData.forEach((value,key)=>{
+                            OrderGridStore.push([{ type: "update", data: value, key: value.id }]);
+                        })
+                } else if (eventType === 2) {
+                    eventData.forEach((value,key)=>{
+                            OrderGridStore.push([{ type: "remove", key: value.id }]);
+                    })
+                }
   
+  
+    
+  })
+ 
   useEffect(() => {
     let token = localStorage.getItem('api_access_token');
     axios.get('http://173.255.116.184:8002/int/ord/api/subscription/orders/subscribe',{
@@ -61,19 +51,19 @@ function GridData() {
   })
     //    return response
      })
-
     .catch(err => console.log('checking in socket onOpen' , err));
 
    
   });
+
+ 
+
   const dataSource = new DataSource({
     store: OrderGridStore,
     reshapeOnPush: true
-   });
-
-  
-  
+   });  
  
+
     return (
         <DataGrid
           dataSource={dataSource}

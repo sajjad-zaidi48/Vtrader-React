@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
+import Subscribe from '../service/orderSubscribe';
 import Form from 'devextreme-react/form';
-import Employe from '../data/formdata';
 import '../css/formData.css';
 import { Button } from 'devextreme-react/button';
-import notify from 'devextreme/ui/notify';
 import axios from 'axios';
 
 const colCountByScreen = {
@@ -14,37 +12,44 @@ const colCountByScreen = {
 
 
 
-function TraderForm() {
-  const [form , setForm] = useState({
+function TraderForm({handleData,checkingTest}) {
+  let [formData , setFormData] = useState({
     ordType: '1',
     side: '1',
-    symbol: 'BABA',
+    symbol: 'MSFT',
     timeInForce: "1",
-    account: 'qatest21account1',
+    account: 'qatest24account1',
     orderQty: '100',
-    
-   
   })
+
+  // handleForm  
+
   const handleFormData = async(e)=>{
     let token = localStorage.getItem("api_access_token")
-    console.log(token)
+    let x =  {
+      ordType: "1",   
+      side: "1",   
+      symbol: "LUMN",
+      timeInForce: "1",   
+      account: "qatest24account1",   
+      orderQty: 100 
+   }
+   console.log('formData' , formData)
+   console.log(x)
     await axios.post( 'http://173.255.116.184:8002/int/ord/api/orders',
-    {
-        ordType: "1",   
-        side: "1",   
-        symbol: "LUMN",
-        timeInForce: "1",   
-        account: "qatest24account1",   
-        orderQty: 100 
-    },
+    x,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
     ).then(function(response){
-      console.log(response)
+      console.log('buy response' , response)
+      Subscribe()
     }).catch((err)=>console.log(err)); 
    
   }
+
+  
+ 
 
     return (
       <div className='Orderform'>
@@ -53,13 +58,12 @@ function TraderForm() {
 
         <Form
           id="form"
-          formData={form}
+          formData={formData}
           colCountByScreen={colCountByScreen}
           labelLocation="top"
           minColWidth={533}
           colCount="auto"
           screenByWidth={screenByWidth}
-          // onValueChanged={handleFormData}
         />
         <div className="buttons-demo">
         <div className="buttons">
@@ -69,7 +73,10 @@ function TraderForm() {
                   type="default"
                   stylingMode="contained"
                   onClick={handleFormData}
+                
                 />
+               
+        
         </div>
         </div>
       </div>

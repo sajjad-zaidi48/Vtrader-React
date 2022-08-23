@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import Subscribe from  './orderSubscribe'
+import { emitCustomEvent } from 'react-custom-events'
+
 
 const socketConnect = io();
 let token = localStorage.getItem('api_access_token');
@@ -16,7 +18,7 @@ function  SocketConnecter({handleData}) {
       headers: { Authorization: `Bearer ${token}` }
     })
   .then(function(response){
-     console.log('subscribe response' , response)
+    //  console.log('subscribe response' , response)
    })
 
   .catch(err => console.log('checking in socket onOpen' , err));
@@ -41,8 +43,9 @@ function  SocketConnecter({handleData}) {
         const data = JSON.parse(msg.data)
         console.log(data) 
         if (data.method === 'Orders'){
-            console.log('checking data in socket',data.data)
-            handleData(data)
+            console.log('checking data in socket',data)
+            emitCustomEvent('my-event', data)
+          
             // emitter.$emit('ordersSubscribeEvent', data)
         }     
     }
