@@ -11,20 +11,8 @@ let socket = new WebSocket('ws://173.255.116.184:8002/transactionalws?access_tok
 socket.close()
 function  SocketConnecter({handleData}) {
  
-  console.log(token)
 
-  let orderSubscribe = () => {
-    axios.get('http://173.255.116.184:8002/int/ord/api/subscription/orders/subscribe',{
-      headers: { Authorization: `Bearer ${token}` }
-    })
-  .then(function(response){
-    //  console.log('subscribe response' , response)
-   })
-
-  .catch(err => console.log('checking in socket onOpen' , err));
-     
-  }
-
+  
   useEffect(() => {
     
     console.log('checking socket' , socket.readyState)
@@ -45,7 +33,6 @@ function  SocketConnecter({handleData}) {
         if (data.method === 'Orders'){
             console.log('checking data in socket',data)
             emitCustomEvent('my-event', data)
-          
             // emitter.$emit('ordersSubscribeEvent', data)
         }     
     }
@@ -62,22 +49,6 @@ function  SocketConnecter({handleData}) {
     socket.onerror = function(err) {
         console.log('Socket', err)
     }
-
-
-    // socket.onopen = function() {
-    //     console.log('Connected')
-    //     let  token  = localStorage.getItem("api_access_token")
-    //     axios.get('http://173.255.116.184:8002/int/ord/api/subscription/orders/subscribe',{
-    //         headers: { Authorization: `Bearer ${token}` }
-    //       })
-    //     .then(function(response){
-    //        console.log(response)
-
-    //      })
-    //     .catch(err => console.log('checking in socket onOpen' , err));
-         
-
-    // }
     
 
     

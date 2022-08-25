@@ -12,44 +12,35 @@ const colCountByScreen = {
 
 
 
-function TraderForm({handleData,checkingTest}) {
-  let [formData , setFormData] = useState({
-    ordType: '1',
-    side: '1',
-    symbol: 'MSFT',
+function TraderForm({ handleData, checkingTest, }) {
+  let [fieldData, setFieldData] = useState({
+    ordType: "1",
+    side: "1",
+    symbol: "LUMN",
     timeInForce: "1",
-    account: 'qatest24account1',
-    orderQty: '100',
+    account: "qatest24account1",
+    orderQty: 100 
   })
 
   // handleForm  
 
-  const handleFormData = async(e)=>{
+  const handleFormData = async (e) => {
     let token = localStorage.getItem("api_access_token")
-    let x =  {
-      ordType: "1",   
-      side: "1",   
-      symbol: "LUMN",
-      timeInForce: "1",   
-      account: "qatest24account1",   
-      orderQty: 100 
-   }
-   console.log('formData' , formData)
-   console.log(x)
-    await axios.post( 'http://173.255.116.184:8002/int/ord/api/orders',
-    x,
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    ).then(function(response){
-      console.log('buy response' , response)
-      Subscribe()
-    }).catch((err)=>console.log(err)); 
-   
-  }
+   console.log('formData', fieldData)
+    await axios.post('http://173.255.116.184:8002/int/ord/api/orders',
+        fieldData,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      ).then(function (response) {
+        console.log('buy response', response)
+        Subscribe()
+      }).catch((err) => console.log(err));
 
-  
- 
+    }
+    const handleField = (e) => {
+      return e.value
+    }
 
     return (
       <div className='Orderform'>
@@ -58,33 +49,34 @@ function TraderForm({handleData,checkingTest}) {
 
         <Form
           id="form"
-          formData={formData}
+          formData={fieldData}
           colCountByScreen={colCountByScreen}
           labelLocation="top"
           minColWidth={533}
           colCount="auto"
           screenByWidth={screenByWidth}
+          onFieldDataChanged={handleField}
         />
         <div className="buttons-demo">
-        <div className="buttons">
-        <Button
-                  width={120}
-                  text="BUY"
-                  type="default"
-                  stylingMode="contained"
-                  onClick={handleFormData}
-                
-                />
-               
-        
-        </div>
+          <div className="buttons">
+            <Button
+              width={120}
+              text="BUY"
+              type="default"
+              stylingMode="contained"
+              onClick={handleFormData}
+
+            />
+
+
+          </div>
         </div>
       </div>
     );
   }
 
-function screenByWidth(width) {
-  return width < 720 ? 'md' : 'md';
-}
+  function screenByWidth(width) {
+    return width < 720 ? 'md' : 'md';
+  }
 
-export default TraderForm;
+  export default TraderForm;

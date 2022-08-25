@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,CSSProperties } from 'react';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.css';
 import './App.css';
@@ -7,18 +7,30 @@ import TraderForm from './components/traderform';
 import { Button } from 'devextreme-react/button';
 import axios from 'axios';
 import SocketConnecter from './service/reactServices';
+import MoonLoader from "react-spinners/MoonLoader";
+import Subscribe from './service/orderSubscribe';
 
 
-
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "black",
+  marginLeft: '1rem',
+  marginRight:'1rem'
+};
 
 function App() {
   const [codeId, setcodeId] = useState('')
-  const [userlogin, setuserlogin] = useState(false)
-  const [test, setTest] = useState(false)
+  let [loading, setLoading] = useState(false);
 
+  const [userlogin, setuserlogin] = useState(false);
+
+  const [test, setTest] = useState(false);
+  
+ 
   async function login() {
+     setLoading(true)
     await axios.post("http://173.255.116.184:8002/int/is/api/login",
-
       {
         email: 'qatest24@mailinator.com',
         password: 'qatest24',
@@ -32,7 +44,7 @@ function App() {
           .then(function (response) {
             let bearerToken = response.data.access_token
             localStorage.setItem("api_access_token", bearerToken)
-            setuserlogin(true)
+            setLoading(false)
           })
           .catch(err => console.warn(err));
       }
@@ -71,10 +83,10 @@ function App() {
   return (
     <div >
 
-      <SocketConnecter handleData={handleData} />
+      <SocketConnecter handleData={handleData}  />
 
       {/* <ReactSocket/> */}
-
+      
       <div className='nav'>
         <h1>V-Trader App</h1>
         <div className='btn-login'>
@@ -85,16 +97,18 @@ function App() {
             stylingMode="contained"
             onClick={handleLogin}
           />
+            <MoonLoader color={'#337ab7'} loading={loading} cssOverride={override} size={20} />
+
         </div>
 
 
       </div>
       <div className='dashBoard'>
         <div >
-          <TraderForm checkingTest={checkingTest} />
+          <TraderForm checkingTest={checkingTest}   />
         </div>
         <div className='orderBlotter'>
-          <GridData handleData={handleData} login={userlogin} checkingTest={checkingTest} test={test} />
+          <GridData handleData={handleData} login={userlogin} checkingTest={checkingTest}   />
         </div>
       </div>
 

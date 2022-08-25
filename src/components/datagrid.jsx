@@ -9,7 +9,7 @@ import { useCustomEventListener } from 'react-custom-events'
 
 
 
-function GridData({handleData ,test}) {
+function GridData({handleData }) {
 
   const columns = ['symbol','qOrderID','account','sideDesc','orderTypeDesc','price', 'avgPx','statusDesc','tifDesc','transactionTime','text', 'destination'];
   
@@ -47,11 +47,12 @@ function GridData({handleData ,test}) {
     .then(function(response){
        console.log('subscribe response' , response)
        response.data.eventData.forEach(function(value,key){
-        OrderGridStore.push([{ type: "insert", data: value }]); 
+       OrderGridStore.push([{ type: "insert", data: value }]); 
+      
   })
     //    return response
      })
-    .catch(err => console.log('checking in socket onOpen' , err));
+    .catch(err => console.log('checking in data grid' , err));
 
    
   });
@@ -60,7 +61,9 @@ function GridData({handleData ,test}) {
 
   const dataSource = new DataSource({
     store: OrderGridStore,
-    reshapeOnPush: true
+    reshapeOnPush: true,
+    paginate: true,
+    pageSize: 10
    });  
  
 
@@ -69,6 +72,8 @@ function GridData({handleData ,test}) {
           dataSource={dataSource}
           defaultColumns={columns}
           showBorders={true}
+          defaultPageSize={2}
+          defaultPageIndex={1} 
         />
       );
 }
