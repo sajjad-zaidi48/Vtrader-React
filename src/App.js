@@ -65,7 +65,6 @@ function App() {
 
   const handleData = (data) => {
     // socketData.push(data)
-    console.log('getting socket on message data from child ', data)
     setTest(true)
     return data
 
@@ -76,7 +75,6 @@ function App() {
   }
 
   const checkingTest = () => {
-    console.log('checked')
     setTest(true)
     return true
   }

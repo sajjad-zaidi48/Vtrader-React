@@ -18,7 +18,6 @@ function GridData({handleData }) {
    });
  
    useCustomEventListener('my-event', (data) => {
-    console.log('custom library data',data)
     let eventType = data.data.eventType
                 let eventData = data.data.eventData
                 if (eventType === 0) {
@@ -46,7 +45,6 @@ function GridData({handleData }) {
           headers: { Authorization: `Bearer ${token}` }
         })
       .then(function(response){
-         console.log('subscribe response' , response)
          response.data.eventData.forEach(function(value,key){
          OrderGridStore.push([{ type: "insert", data: value }]); 
 

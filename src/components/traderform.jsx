@@ -26,14 +26,12 @@ function TraderForm({ handleData, checkingTest, }) {
 
   const handleFormData = async (e) => {
     let token = localStorage.getItem("api_access_token")
-   console.log('formData', fieldData)
     await axios.post('http://173.255.116.184:8002/int/ord/api/orders',
         fieldData,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
       ).then(function (response) {
-        console.log('buy response', response)
         Subscribe()
       }).catch((err) => console.log(err));
 
