@@ -41,18 +41,21 @@ function GridData({handleData }) {
  
   useEffect(() => {
     let token = localStorage.getItem('api_access_token');
-    axios.get('http://173.255.116.184:8002/int/ord/api/subscription/orders/subscribe',{
-        headers: { Authorization: `Bearer ${token}` }
+    if(token != null){
+      axios.get('http://173.255.116.184:8002/int/ord/api/subscription/orders/subscribe',{
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      .then(function(response){
+         console.log('subscribe response' , response)
+         response.data.eventData.forEach(function(value,key){
+         OrderGridStore.push([{ type: "insert", data: value }]); 
+
+         
+        })
+        //    return response
       })
-    .then(function(response){
-       console.log('subscribe response' , response)
-       response.data.eventData.forEach(function(value,key){
-       OrderGridStore.push([{ type: "insert", data: value }]); 
-      
-  })
-    //    return response
-     })
-    .catch(err => console.log('checking in data grid' , err));
+      .catch(err => console.log('checking in data grid' , err));
+    }
 
    
   });
